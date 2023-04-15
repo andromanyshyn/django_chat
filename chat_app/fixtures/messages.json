@@ -1,0 +1,112 @@
+[
+  {
+    "model": "chat_app.message",
+    "pk": 1,
+    "fields": {
+      "sender": 3,
+      "text": "Hi, how are you? Ready to go?",
+      "thread": 1,
+      "created": "2023-04-15T15:39:57.796Z",
+      "is_read": false
+    }
+  },
+  {
+    "model": "chat_app.message",
+    "pk": 2,
+    "fields": {
+      "sender": 2,
+      "text": "Yes ready to go and really excited",
+      "thread": 1,
+      "created": "2023-04-15T15:40:14.571Z",
+      "is_read": false
+    }
+  },
+  {
+    "model": "chat_app.message",
+    "pk": 3,
+    "fields": {
+      "sender": 3,
+      "text": "It should be a good match and great atmosphere.",
+      "thread": 1,
+      "created": "2023-04-15T15:40:27.405Z",
+      "is_read": false
+    }
+  },
+  {
+    "model": "chat_app.message",
+    "pk": 4,
+    "fields": {
+      "sender": 2,
+      "text": "Yes. It�s always good when the local football team plays at home.",
+      "thread": 1,
+      "created": "2023-04-15T15:40:39.186Z",
+      "is_read": false
+    }
+  },
+  {
+    "model": "chat_app.message",
+    "pk": 5,
+    "fields": {
+      "sender": 5,
+      "text": "Don't you think it's nice out?",
+      "thread": 2,
+      "created": "2023-04-15T15:43:26.643Z",
+      "is_read": false
+    }
+  },
+  {
+    "model": "chat_app.message",
+    "pk": 6,
+    "fields": {
+      "sender": 4,
+      "text": "Yes, I think so too.",
+      "thread": 2,
+      "created": "2023-04-15T15:43:44.855Z",
+      "is_read": false
+    }
+  },
+  {
+    "model": "chat_app.message",
+    "pk": 7,
+    "fields": {
+      "sender": 5,
+      "text": "I think that it's going to rain.",
+      "thread": 2,
+      "created": "2023-04-15T15:43:53.782Z",
+      "is_read": false
+    }
+  },
+  {
+    "model": "chat_app.message",
+    "pk": 8,
+    "fields": {
+      "sender": 4,
+      "text": "I hope that it does rain.",
+      "thread": 2,
+      "created": "2023-04-15T15:44:02.589Z",
+      "is_read": false
+    }
+  },
+  {
+    "model": "chat_app.message",
+    "pk": 9,
+    "fields": {
+      "sender": 5,
+      "text": "You like the rain?",
+      "thread": 2,
+      "created": "2023-04-15T15:44:10.559Z",
+      "is_read": false
+    }
+  },
+  {
+    "model": "chat_app.message",
+    "pk": 10,
+    "fields": {
+      "sender": 4,
+      "text": "The sky looks so clean after it rains. I love it.",
+      "thread": 2,
+      "created": "2023-04-15T15:44:18.789Z",
+      "is_read": false
+    }
+  }
+]

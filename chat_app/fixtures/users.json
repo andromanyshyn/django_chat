@@ -1,0 +1,92 @@
+[
+  {
+    "model": "chat_app.user",
+    "pk": 1,
+    "fields": {
+      "password": "pbkdf2_sha256$600000$CSzRVvtH3y1CLOgxTYjQEE$bXi2k1x9f18tb93dFrjsydNL9jDw6nxa/5LDL5EXcLo=",
+      "last_login": "2023-04-15T15:35:56.487Z",
+      "is_superuser": true,
+      "username": "moriss",
+      "first_name": "",
+      "last_name": "",
+      "email": "",
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2023-04-15T15:35:39.882Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "chat_app.user",
+    "pk": 2,
+    "fields": {
+      "password": "a9517535",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "Andrew",
+      "first_name": "",
+      "last_name": "",
+      "email": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2023-04-15T15:36:24.491Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "chat_app.user",
+    "pk": 3,
+    "fields": {
+      "password": "a9517535",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "John",
+      "first_name": "",
+      "last_name": "",
+      "email": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2023-04-15T15:36:34.395Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "chat_app.user",
+    "pk": 4,
+    "fields": {
+      "password": "a9517535",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "Lucy",
+      "first_name": "",
+      "last_name": "",
+      "email": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2023-04-15T15:41:07.781Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "chat_app.user",
+    "pk": 5,
+    "fields": {
+      "password": "a9517535",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "Ewa",
+      "first_name": "",
+      "last_name": "",
+      "email": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2023-04-15T15:42:23.541Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  }
+]
