@@ -1,93 +1,75 @@
 from rest_framework import status
-from rest_framework.generics import (CreateAPIView, ListAPIView,
-                                     RetrieveAPIView, RetrieveDestroyAPIView)
+from rest_framework.decorators import action
 from rest_framework.pagination import LimitOffsetPagination
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.viewsets import ModelViewSet
 
-from .models import Message, Thread, User
-from .serializers import MessageSerializer, ThreadSerializer
+from chat_app.models import Message, Thread
+from chat_app.serializers import MessageSerializer, ThreadSerializer
 
 
-class ThreadRetriveAPIView(RetrieveAPIView):
+class ThreadViewSet(ModelViewSet):
+    """GET - /threads/ - Get All Threads for the User
+    POST - /threads/ - Creation of a thread, if it exists then just return it
+    PUT - /threads/<pk>/ - Put request
+    PATCH - /threads/<pk>/ - Patch request
+    DELETE - /threads/<pk>/ - Delete a thread
+    GET - /threads/<pk>/messages/ - Retrieve List of messages for the Thread
+    """
+
     queryset = Thread.objects.all()
     serializer_class = ThreadSerializer
+    permission_classes = (IsAuthenticated,)
     pagination_class = LimitOffsetPagination
 
-    def retrieve(self, request, *args, **kwargs):
-        user = User.objects.filter(pk=kwargs['pk'])
-        if user:
-            threads = user.first().threads.all()
-            serializer = self.get_serializer(threads, many=True)
-            return Response(serializer.data)
-        return Response({'detail': 'Not found.'}, status=status.HTTP_404_NOT_FOUND)
-
-
-class ThreadCreateAPIView(CreateAPIView):
-    queryset = Thread.objects.all()
-    serializer_class = ThreadSerializer
+    def get_queryset(self):
+        return self.request.user.threads.all()
 
     def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        headers = self.get_success_headers(serializer.data)
-        thread = Thread.objects.filter(participants__in=serializer.data['participants'])
+        thread = Thread.objects.filter(
+            participants__in=request.data["participants"]
+        ).first()
         if thread:
-            serializer = self.get_serializer(thread.first())
+            serializer = self.get_serializer(thread)
             return Response(serializer.data)
         else:
-            serializer = self.get_serializer(data=request.data)
-            serializer.is_valid(raise_exception=True)
-            self.perform_create(serializer)
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+            response = super().create(request, *args, *kwargs)
+            return Response(response.data, status=response.status_code)
+
+    @action(detail=True, methods=["GET"])
+    def messages(self, request, pk):
+        thread = self.get_object()
+        messages = Message.objects.filter(thread=thread)
+        serializer = MessageSerializer(messages, many=True)
+        return Response(serializer.data)
 
 
-class ThreadDestroyAPIView(RetrieveDestroyAPIView):
-    queryset = Thread.objects.all()
-    serializer_class = ThreadSerializer
+class MessageViewSet(ModelViewSet):
+    """GET - /messages/ - Get All messages
+    GET - /messages/<pk> - Get and read the message
+    POST - /messages/ - Creation of a message
+    PUT - /messages/<pk>/ - Put request
+    PATCH - /messages/<pk>/ - Patch request
+    DELETE - /messages/<pk>/ - Delete a message
+    GET - /messages/unread_messages/ - Retrieve count of unread messages for the user
+    """
 
-
-class MessageCreateAPIView(CreateAPIView):
     queryset = Message.objects.all()
     serializer_class = MessageSerializer
     pagination_class = LimitOffsetPagination
 
-
-class MessagesRetriveThreadAPIView(RetrieveAPIView):
-    queryset = Message.objects.all()
-    serializer_class = MessageSerializer
-    pagination_class = LimitOffsetPagination
-
     def retrieve(self, request, *args, **kwargs):
-        thread = Thread.objects.filter(pk=kwargs['pk'])
-        if thread:
-            messages = thread.first().thread_messages.all()
-            serializer = self.get_serializer(messages, many=True)
-            return Response(serializer.data)
-        return Response({'detail': 'Not found.'}, status=status.HTTP_404_NOT_FOUND)
+        instance = self.get_object()
+        if not instance.is_read:
+            instance.is_read = True
+            instance.save()
+        return Response(status=status.HTTP_200_OK)
 
-
-class MessageReadAPIView(RetrieveAPIView):
-    queryset = Message.objects.all()
-    serializer_class = MessageSerializer
-
-    def retrieve(self, request, *args, **kwargs):
-        message = Message.objects.filter(pk=kwargs['pk'])
-        if message:
-            message = message.first()
-            message.is_read = True
-            message.save()
-            serializer = self.get_serializer(message)
-            return Response(serializer.data)
-        return Response({'detail': 'Not found.'}, status=status.HTTP_404_NOT_FOUND)
-
-
-class MessageUnreadAPIView(RetrieveAPIView):
-    queryset = Message.objects.all()
-    serializer_class = MessageSerializer
-
-    def retrieve(self, request, *args, **kwargs):
-        user = User.objects.filter(pk=kwargs['pk'])
-        if user:
-            unread_messages = user.first().sent_messages.all().filter(is_read=False).count()
-            return Response({'count of unread messages': unread_messages})
-        return Response({'detail': 'Not found.'}, status=status.HTTP_404_NOT_FOUND)
+    @action(detail=False, methods=["GET"])
+    def unread_messages(self, request):
+        count_messages = self.queryset.filter(
+            sender=request.user, is_read=False
+        ).count()
+        data = {"unread_messages": count_messages}
+        return Response(data)
