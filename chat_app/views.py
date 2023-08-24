@@ -58,6 +58,7 @@ class MessageViewSet(ModelViewSet):
     queryset = Message.objects.all()
     serializer_class = MessageSerializer
     pagination_class = LimitOffsetPagination
+    permission_classes = (IsAuthenticated, )
 
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
